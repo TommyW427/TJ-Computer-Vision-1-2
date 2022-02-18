@@ -142,7 +142,7 @@ double* getOutCenter(double x1, double y1, double x2, double y2, double x3, doub
     return circumcenter;
 }
 
-void Bresenham(double ex1,double ey1,double ex2,double ey2) {
+void Bresenham(double ex1,double ey1,double ex2,double ey2,string color) {
     //preconditions: x2>x1 and y2>y1 and driving axis is x axis 
     //one pixel on each value on driving axis from start to finish
     //driving axis is farther distance
@@ -162,13 +162,13 @@ void Bresenham(double ex1,double ey1,double ex2,double ey2) {
     
     if (dy==0) {
         for (int i=xi; i<=xf; i++) {
-            illuminate(i,yi,"red");
+            illuminate(i,yi,color);
         }
         return;
     }
     else if (dx==0) {
         for (int j=yi; j<=yf; j++) {
-            illuminate(xi,j,"red");
+            illuminate(xi,j,color);
         }
         return;
     }
@@ -179,7 +179,7 @@ void Bresenham(double ex1,double ey1,double ex2,double ey2) {
     if (dy<=dx) { 
         e=dy-dx;
         for (int i=x1; (x2==xf) ? i<x2 : i>x2; (x2==xf) ? i++ : i--) {
-            illuminate(i,j,"red");
+            illuminate(i,j,color);
             if (e>=0) {
                 y1==yi ? j++ : j--;
                 e-=dx;
@@ -191,7 +191,7 @@ void Bresenham(double ex1,double ey1,double ex2,double ey2) {
         e=dx-dy;  
         j=x1;
         for (int i=y1; (y2==yf) ? i<y2 : i>y2; (y2==yf) ? i++ : i--) {
-            illuminate(j,i,"red");
+            illuminate(j,i,color);
             if (e>=0) {
                 x1==xi ? j++ : j--;
                 e-=dy;
@@ -222,24 +222,24 @@ void euler(double x1, double y1, double x2, double y2, double x3, double y3,doub
     double slope = (circCent[1]-centroidY)/(circCent[0]-centroidX);
    
     if (isinf(slope)) {
-        Bresenham(centroidX,0,centroidX,1);
+        Bresenham(centroidX,0,centroidX,1,"red");
     }
     else if (isnan(slope)) {
-        Bresenham(0,centroidY,1,centroidY);
+        Bresenham(0,centroidY,1,centroidY,"red");
     }
     if (abs(slope)>=1) {
         double xValue = slope;
         double constValue = slope*(-1)*centroidX + centroidY;
         double xmin = -1*constValue/xValue;
         double xmax = (1-constValue)/xValue;
-        Bresenham(xmin,0,xmax,1);
+        Bresenham(xmin,0,xmax,1,"red");
         cout << "Euler Line: y = " << xValue << "x + " << constValue << "\n";
     }
     else {
         cout << "Euler Line: y = " << slope << "x + " << slope*(-1)*centroidX + centroidY << "\n";
         double ymin = slope*(0-centroidX)+centroidY;
         double ymax = slope*(1-centroidX)+centroidY;
-        Bresenham(0,ymin,1,ymax);
+        Bresenham(0,ymin,1,ymax,"red");
     }
     return;
 }
@@ -255,7 +255,7 @@ void nineCircle(double x1, double y1, double x2, double y2, double x3, double y3
     double y9 = (orthY+circumcenter[1])/2;
     double rad = getOutRadius(x1,y1,x2,y2,x3,y3)/2;
     
-    circle(rad,x9,y9,"red");
+    circle(rad,x9,y9,"green");
     
     cout << "Orthocenter: [" << orthX << ", " << orthY << "]\n";
     cout << "Centroid: [" << centroidX << ", " << centroidY << "]\n";
@@ -296,9 +296,9 @@ int main() {
     double inRad = getInRadius(p1[0],p1[1],p2[0],p2[1],p3[0],p3[1]);
     double outRad = getOutRadius(p1[0],p1[1],p2[0],p2[1],p3[0],p3[1]);
     
-    Bresenham(p1[0],p1[1],p2[0],p2[1]);
-    Bresenham(p2[0],p2[1],p3[0],p3[1]);
-    Bresenham(p3[0],p3[1],p1[0],p1[1]);
+    Bresenham(p1[0],p1[1],p2[0],p2[1],blue);
+    Bresenham(p2[0],p2[1],p3[0],p3[1],blue);
+    Bresenham(p3[0],p3[1],p1[0],p1[1],blue);
     
     double *circumcenter = new double[2];
     double *incenter = new double[2];
